@@ -9,7 +9,6 @@ function App() {
   const [todo, setTodo] = useState("");
   const [inputError, setInputError] = useState("");
   const [todoList, setTodoList] = useState([]);
-  const [currentTodo, setCurrentTodo] = useState(null);
   const [editTodo, setEditTodo] = useState(null);
 
   const handleInputChange = (event) => {
@@ -41,22 +40,44 @@ function App() {
   };
 
   const handleItemClick = (item) => {
-    setCurrentTodo(item);
+    setEditTodo(item);
+    console.log('editTodo' , editTodo)
+    console.log('todolist', todoList);
   };
 
   const handleTarget = (event) => {
     const { value } = event.target;
-    const newItem = {}
+    const newItem = {...editTodo};
+    newItem.name = value;
+    setEditTodo(newItem)
   };
+
+  const handleSave = () => {
+    const array = todoList.map(item => {
+      if (item.id === editTodo.id) {
+        item.name = editTodo.name
+      }
+      return item
+   })
+   
+   setTodoList(array)
+    setEditTodo(null)
+  }
+
+  const handleKeyDown = (key) => {
+    if (key.code === 'Enter') {
+      handleSave()
+    }
+  }
 
   return (
     <div className="App">
       <div className="todo-container">
         <div className="header-wrapper">
           <Input
+            type="text"
             value={todo}
             onChange={handleInputChange}
-            type="text"
             placeholder="Enter To-do item"
           />
           <Button onClick={handleAddTodo} type="primary">
@@ -72,22 +93,21 @@ function App() {
             renderItem={(item) => {
               return (
                 <List.Item
-                  onEdit={() => setEditTodo(item)}
                   target={editTodo}
                   key={item.id}
                 >
                   {editTodo?.id === item.id 
                   ? ( <Input
                       value={editTodo?.name}
-                      onChange={handleInputChange}
+                      onChange={handleTarget}
                       type="text"
-                      placeholder="Enter To-do item"
+                      onKeyDown={handleKeyDown}
                     />
                   ) 
                   : ( <List.Item.Meta title={item.title} />
                   )}
                   <div className="icons-wrapper">
-                    <EditTwoTone onClick={() => setEditTodo(item.name)} />
+                    <EditTwoTone onClick={() => handleItemClick(item)} />
                     <CloseCircleTwoTone
                       onClick={() => handleRemoveTodo(item.id)}
                     />
