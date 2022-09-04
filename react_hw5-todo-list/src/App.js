@@ -70,8 +70,11 @@ function App() {
 
   return (
     <div className="App">
+
+      <h1>Ant Design To-do List - React HW-5 - Nurbek Beisheev</h1>
       <div className="todo-container">
         <div className="header-wrapper">
+          <div className="header-controls">
           <Input
             type="text"
             value={todo}
@@ -81,6 +84,7 @@ function App() {
           <Button onClick={handleAddTodo} type="primary">
             Add To-do
           </Button>
+          </div>
           {inputError && <div className={"error"}>{inputError}</div>}
         </div>
 
