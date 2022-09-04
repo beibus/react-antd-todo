@@ -41,21 +41,19 @@ function App() {
 
   const handleItemClick = (item) => {
     setEditTodo(item);
-    console.log('editTodo' , editTodo)
-    console.log('todolist', todoList);
   };
 
   const handleTarget = (event) => {
     const { value } = event.target;
     const newItem = {...editTodo};
-    newItem.name = value;
+    newItem.title = value;
     setEditTodo(newItem)
   };
 
   const handleSave = () => {
     const array = todoList.map(item => {
       if (item.id === editTodo.id) {
-        item.name = editTodo.name
+        item.title = editTodo.title
       }
       return item
    })
@@ -98,7 +96,7 @@ function App() {
                 >
                   {editTodo?.id === item.id 
                   ? ( <Input
-                      value={editTodo?.name}
+                      value={editTodo?.title}
                       onChange={handleTarget}
                       type="text"
                       onKeyDown={handleKeyDown}
